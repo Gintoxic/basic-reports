@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+
+    <title>D3 CSV Data Load!</title>
+
+</head>
+
+<body>
+
+<script src="../vendor/d3.v3.min.js"></script>
+<script src="../vendor/d3.v3.layout.min.js"></script>
+<script src="../vendor/rickshaw.min.js"></script>
+
+
+<div id="chart"></div>
+
+ 
+
+<script type="text/javascript">
+
+ 
+
+d3.csv("data_7c_130715.csv", function(error, rows) {
+
+                        var firstPoints = [];
+
+                        var secondPoints = [];
+
+                       
+
+                        for (var i = 0; i < rows.length; i++) {
+
+                                   var row = rows[i];
+
+                                   firstPoints.push({x: +row["timeseq_min"], y: +row["i"]});
+
+                                   secondPoints.push({x: +row["timeseq_min"], y: +row["h"]});
+
+                        }
+
+ 
+
+                        var firstGraph = new Rickshaw.Graph( {
+
+                                   element: document.querySelector("#chart"),
+
+                                   width: 1024,
+
+                                   height: 300,
+
+                                   series: [{
+
+                                               color: 'orange',
+
+                                               data: firstPoints
+
+                                   }, {
+
+                                               color: 'green',
+
+                                               data: secondPoints
+
+                                   }]
+
+                        });
+
+                        firstGraph.render();
+
+            }
+
+);
+
+ 
+
+</script>
+
+</body>
+
+</html>

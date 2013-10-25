@@ -1,0 +1,475 @@
+<!doctype>
+
+<style>
+
+div, span, p, td {
+    font-family: Arial, sans-serif;
+}
+
+#chart {
+    display: inline-block;
+}
+#chart path {
+    -webkit-transition: opacity 0.2s linear;
+}
+#legend {
+    display: inline-block;
+    position: relative;
+    left: 8px;
+}
+#legend_container {
+    position: absolute;
+    right: 0;
+    bottom: 26px;
+    width: 0;
+}
+#chart_container {
+    position: relative;
+    display: inline-block;
+}
+#smoother {
+    margin: 0 0 10px 16px;
+    width: 100px;
+}
+.rickshaw_graph .detail {
+    left: -1000;
+}
+#chart {
+    border: 1px solid #f0f0f0;
+}
+#side_panel {
+    padding: 0 20px 20px 0;
+    width: 240px;
+    display: inline-block;
+    vertical-align: top;
+}
+#side_panel section {
+    color: #505050;
+    font-size: 12px;
+}
+#side_panel section h6 {
+    margin: 0 0 1em 0;
+    font-size: 12px;
+    font-weight: normal;
+}
+#side_panel .ui-slider-horizontal {
+    height: 1px !important;
+    border-color: #e0e0e0;
+    margin-bottom: 10px;
+}
+#side_panel .ui-slider-handle {
+    border-color: #a0a0a0;
+    height: 9px !important;
+    width: 9px !important;
+    top: -5px !important;
+    border-radius: 6px;
+    outline: none;
+    cursor: pointer;
+}
+#legend {
+    background-color: white;
+    margin-left: 0;
+    padding: 0;
+    left: 0;
+}
+#legend .label {
+    color: #404040;
+}
+#legend .action {
+    color: black;
+    opacity: 0.5;
+}
+#legend ul {
+    padding: 0;
+}
+h1 {
+    font-family: Franklin Gothic Medium, UnDotum, Helvetica, Arial;
+    font-weight: normal;
+    font-size: 20px;
+}
+section {
+    border: none;
+    border-top: 1px solid #eaeaea;
+    padding: 15px 0;
+}
+#smoother {
+    margin: 5px 0 0 10px;
+    width: 90%;
+}
+label.disabled {
+    opacity: 0.4;
+}
+#renderer_form.toggler {
+    display: block;
+    margin: 0;
+}
+#renderer_form.toggler input[type=radio]:checked {
+    outline: 2px solid steelblue;
+}
+#renderer_form.toggler input[type=radio] {
+    -moz-appearance: button;
+    background: white;
+    margin: 0 7px;
+    width: 39px;
+    height: 26px;
+    position: absolute;
+}
+#renderer_form.toggler label {
+    display: inline-block;
+    padding: 0;
+    width: 39px;
+    padding-top: 27px;
+    text-align: center;
+    font-size: 10px;
+    color: #808080;
+    background-repeat: no-repeat;
+    position: relative;
+    margin: 0 7px;
+    cursor: pointer;
+}
+#interpolation_form,
+#offset_form {
+    vertical-align: top;
+    display: inline-block;
+    width: 45%;
+}
+#interpolation_form label,
+#offset_form label {
+    display: block;
+}
+label[for=area] {
+    background: url(http://code.shutterstock.com/rickshaw/examples/images/om_stack.png);
+}
+label[for=line] {
+    background: url(http://code.shutterstock.com/rickshaw/examples/images/om_lines.png);
+}
+label[for=bar] {
+    background: url(http://code.shutterstock.com/rickshaw/examples/images/om_bar.png);
+}
+label[for=scatter] {
+    background: url(http://code.shutterstock.com/rickshaw/examples/images/om_scatter.png);
+}
+#offset_form label,
+#interpolation_form label {
+    background-repeat: no-repeat;
+    background-position: 2em center;
+    cursor: pointer;
+    cursor: hand;
+}
+#offset_form label span,
+#interpolation_form label span {
+    padding-left: 36px;
+}
+label[for=stack] {
+    background-image: url(http://code.shutterstock.com/rickshaw/examples/images/offset_stack.png);
+}
+label[for=pct] {
+    background-image: url(http://code.shutterstock.com/rickshaw/examples/images/offset_pct.png);
+}
+label[for=stream] {
+    background-image: url(http://code.shutterstock.com/rickshaw/examples/images/offset_stream.png);
+}
+label[for=value] {
+    background-image: url(http://code.shutterstock.com/rickshaw/examples/images/offset_value.png);
+}
+label[for=cardinal] {
+    background-image: url(http://code.shutterstock.com/rickshaw/examples/images/interp_cardinal.png);
+}
+label[for=linear] {
+    background-image: url(http://code.shutterstock.com/rickshaw/examples/images/interp_linear.png);
+}
+label[for=step] {
+    background-image: url(http://code.shutterstock.com/rickshaw/examples/images/interp_step.png);
+}
+
+#chart_container {
+        display: block;
+        font-family: Arial, Helvetica, sans-serif;
+}
+#chart {
+        float: left;
+}
+#y_axis {
+        float:left;
+        width: 40px;
+}
+#renderer_form {
+        float: left;
+        margin: 2em 0 0 15px;
+        font-size: 13px;
+}
+#legend {
+        clear:both;
+        float:left;
+        margin-left: 15px;
+}
+#slider {
+    float:left;
+    width:400px;
+}
+.risk {position:absolute;z-index:-1;top:0 }
+.low { background:rgba(0,100,0,.3); }
+.risk .moderate { background:rgba(100,100,0,.3); }
+.risk .high { background:rgba(100,0,0,.3); }
+
+
+
+</style>
+
+
+<script src="../vendor/d3.v3.min.js"></script>
+<script src="../vendor/d3.v3.layout.min.js"></script>
+<script src="../vendor/rickshaw.min.js"></script>
+<script src="../css/rickshaw.min.js"></script>
+
+
+
+
+<link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css">
+<link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/src/css/graph.css">
+<link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/src/css/detail.css">
+<link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/src/css/legend.css">
+<link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/examples/css/extensions.css">
+
+
+<script src="../vendor/d3.v3.min.js"></script>
+<script src="../vendor/d3.v3.layout.min.js"></script>
+<script src="../vendor/rickshaw.min.js"></script>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js"></script>
+
+<script src="http://code.shutterstock.com/rickshaw/src/js/Rickshaw.js"></script>
+<script src="http://code.shutterstock.com/rickshaw/src/js/Rickshaw.Class.js"></script>
+<script src="http://code.shutterstock.com/rickshaw/src/js/Rickshaw.Compat.ClassList.js"></script>
+<script src="http://code.shutterstock.com/rickshaw/src/js/Rickshaw.Graph.js"></script>
+<script src="http://code.shutterstock.com/rickshaw/src/js/Rickshaw.Graph.Renderer.js"></script>
+<script src="http://code.shutterstock.com/rickshaw/src/js/Rickshaw.Graph.Renderer.Area.js"></script>
+<script src="http://code.shutterstock.com/rickshaw/src/js/Rickshaw.Graph.Renderer.Line.js"></script>
+<script src="http://code.shutterstock.com/rickshaw/src/js/Rickshaw.Graph.Renderer.Bar.js"></script>
+<script src="http://code.shutterstock.com/rickshaw/src/js/Rickshaw.Graph.Renderer.ScatterPlot.js"></script>
+<script>
+
+
+    Rickshaw.namespace('Rickshaw.Graph.RangeSlider');
+
+Rickshaw.Graph.RangeSlider = function(args) {
+
+    var element = this.element = args.element;
+    var graph = this.graph = args.graph;
+
+    $( function() {
+        $(element).slider( {
+
+            range: true,
+            min: graph.dataDomain()[0],
+            max: graph.dataDomain()[1],
+            values: [ 
+                graph.dataDomain()[0],
+                graph.dataDomain()[1]
+            ],
+            slide: function( event, ui ) {
+
+                graph.window.xMin = ui.values[0];
+                graph.window.xMax = ui.values[1];
+                graph.update();
+
+                // if we're at an extreme, stick there
+                if (graph.dataDomain()[0] == ui.values[0]) {
+                    graph.window.xMin = undefined;
+                }
+                if (graph.dataDomain()[1] == ui.values[1]) {
+                    graph.window.xMax = undefined;
+                }
+            }
+        } );
+    } );
+
+    element.style.width = graph.width + 'px';
+    
+    graph.onUpdate( function() {
+
+        var values = $(element).slider('option', 'values');
+
+        $(element).slider('option', 'min', graph.dataDomain()[0]);
+        $(element).slider('option', 'max', graph.dataDomain()[1]);
+
+        if (graph.window.xMin == undefined) {
+            values[0] = graph.dataDomain()[0];
+        }
+        if (graph.window.xMax == undefined) {
+            values[1] = graph.dataDomain()[1];
+        }
+
+        $(element).slider('option', 'values', values);
+
+    } );
+};
+
+
+</script>
+<script src="http://code.shutterstock.com/rickshaw/src/js/Rickshaw.Graph.HoverDetail.js"></script>
+<script src="http://code.shutterstock.com/rickshaw/src/js/Rickshaw.Graph.Annotate.js"></script>
+<script src="http://code.shutterstock.com/rickshaw/src/js/Rickshaw.Graph.Legend.js"></script>
+<script src="http://code.shutterstock.com/rickshaw/src/js/Rickshaw.Graph.Axis.Time.js"></script>
+<script src="http://code.shutterstock.com/rickshaw/src/js/Rickshaw.Graph.Behavior.Series.Toggle.js"></script>
+<script src="http://code.shutterstock.com/rickshaw/src/js/Rickshaw.Graph.Behavior.Series.Order.js"></script>
+<script src="http://code.shutterstock.com/rickshaw/src/js/Rickshaw.Graph.Behavior.Series.Highlight.js"></script>
+<script src="http://code.shutterstock.com/rickshaw/src/js/Rickshaw.Graph.Smoother.js"></script>
+<script src="http://code.shutterstock.com/rickshaw/src/js/Rickshaw.Graph.Unstacker.js"></script>
+<script src="http://code.shutterstock.com/rickshaw/src/js/Rickshaw.Fixtures.Time.js"></script>
+<script src="http://code.shutterstock.com/rickshaw/src/js/Rickshaw.Fixtures.Number.js"></script>
+<script src="http://code.shutterstock.com/rickshaw/src/js/Rickshaw.Fixtures.RandomData.js"></script>
+<script src="http://code.shutterstock.com/rickshaw/src/js/Rickshaw.Fixtures.Color.js"></script>
+<script src="http://code.shutterstock.com/rickshaw/src/js/Rickshaw.Color.Palette.js"></script>
+<script src="http://code.shutterstock.com/rickshaw/src/js/Rickshaw.Graph.Axis.Y.js"></script>
+
+<script src="http://code.shutterstock.com/rickshaw/examples/js/extensions.js"></script>
+
+<div id="content">
+
+    <div id="chart_container">
+        <div id="y_axis"></div>
+        <div id="chart"></div>
+        <div id="legend"></div>
+        <form id="renderer_form" class="toggler">
+           
+        </form>
+        <div id="slider"></div>
+    </div>
+</div>
+
+
+
+
+<script>
+
+d3.csv("daywise.csv", function(error, rows) {
+
+	var mydate = [];
+	var var1 = [];
+	var var2 = [];
+	var var3 = [];
+	var var4 = [];
+	var var5 = [];
+	
+	   for (var i = 0; i < rows.length; i++) {
+
+		   var row = rows[i];
+
+		   var1.push({x: +row["date"], y: +row["Apple"]});
+		   var2.push({x: +row["date"], y: +row["Samsung"]});
+		   var3.push({x: +row["date"], y: +row["HTC"]});
+		   var4.push({x: +row["date"], y: +row["Other"]});
+		   var5.push({x: +row["date"], y: +row["NA"]});
+
+		}
+
+	
+
+
+
+var maxHeight = 250;
+var palette = new Rickshaw.Color.Palette();
+
+var graph = new Rickshaw.Graph( {
+        element: document.querySelector("#chart"),
+    height: maxHeight,
+            
+        renderer: 'line',
+         series: [{								
+                                               color: palette.color(),
+											   name: 'Other',
+                                               data: var1
+											   
+                                   }, {
+                                               color: palette.color(),
+											   name: 'Something Else',
+                                               data: var2
+                                   }, {
+                                              color: palette.color(),
+											   name: 'Whatever',
+                                               data: var3
+                                   }, {
+                                              color: palette.color(),
+											   name: 'Different',
+                                               data: var4
+                                   }, {
+                                              color: palette.color(),
+											   name: 'Someting',
+                                               data: var5
+                                   }
+								   
+								   
+								   ]
+		
+} );
+
+var x_axis = new Rickshaw.Graph.Axis.Time( { graph: graph } );
+
+var y_axis = new Rickshaw.Graph.Axis.Y( {
+        graph: graph,
+        orientation: 'left',
+        tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+        element: document.getElementById('y_axis'),
+} );
+
+var legend = new Rickshaw.Graph.Legend( {
+        element: document.querySelector('#legend'),
+        graph: graph
+} );
+var shelving = new Rickshaw.Graph.Behavior.Series.Toggle({
+    graph: graph,
+    legend: legend
+});
+var order = new Rickshaw.Graph.Behavior.Series.Order({
+    graph: graph,
+    legend: legend
+});
+var highlighter = new Rickshaw.Graph.Behavior.Series.Highlight({
+    graph: graph,
+    legend: legend
+});
+var hoverDetail = new Rickshaw.Graph.HoverDetail( {
+    graph: graph
+} );
+var slider = new Rickshaw.Graph.RangeSlider({
+    element: document.querySelector('#slider'),
+    graph: graph
+});
+
+
+graph.render();
+var theSVG = d3.select("#chart svg");
+
+function get_maximum_all(series) {
+    var max=0;
+    for (var i in series) {
+        var stack=series[i].stack;
+        for (n in stack) {
+            if (stack[n].y>max) {max=stack[n].y;}
+            if (stack[n].y0>max) {max=stack[n].y0;}
+        }
+    }
+    return parseInt(max);
+}
+
+
+
+}
+);
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+

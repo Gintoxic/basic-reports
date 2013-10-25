@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+
+    <title>D3 CSV Data Load!</title>
+
+</head>
+
+<body>
+
+<script src="../vendor/d3.v3.js"></script>
+<script src="../vendor/d3.layout.cloud.js"></script>
+<script src="../vendor/rickshaw.min.js"></script>
+
+<div id="chart"></div>
+ 
+
+<script type="text/javascript">
+
+ 
+
+d3.csv("hours.csv", function(d) {
+
+    return { x: +d["a"], y: +d["b"]  };
+
+            },
+
+            function(error, rows) {window["sd"] = rows;
+      
+
+var graph = new Rickshaw.Graph( {
+
+element: document.querySelector("#chart"),
+
+width: 300,
+
+height: 200,
+
+series: [{
+
+color: 'steelblue',
+
+data: sd
+
+}]
+
+});
+
+graph.render();
+
+           
+
+           
+
+}
+
+);
+
+ 
+
+ 
+
+ 
+
+</script>
+
+</body>
+
+</html>
